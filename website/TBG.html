@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mini Adventure Game</title>
+    <style>
+        #gameImage {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HTML: Game content -->
+
+    <h2 id="roomTitle">Room Title</h2>
+    <img id="gameImage" src="" alt="Room Image">
+    <p id="roomDescription">Room Description</p>
+
+    <!-- User input -->
+    <input type="text" id="userInput" placeholder="Type your command">
+    <button onclick="processCommand()">Go</button>
+
+    <!-- JavaScript: Game logic -->
+
+    <script>
+        // Game rooms
+        var rooms = {
+            'start': {
+                'title': 'The Nice Outside',
+                'description': 'You are outside enjoying a beautiful day, but you feel strange energies coming from everywhere. You can go either North, South, East or West.',
+                'image': 'enviroment_two.png',
+                'directions': {
+                    'north': 'tree',
+					'south': 'crappy_start',
+                    'east': 'comput',
+                    'west': 'person'
+                }
+            },
+            'crappy_start': {
+                'title': 'The not so nice Outside',
+                'description': 'It appears that the outside isn\'t so up to par or high quality as the previous outside. It\'s probably best to go back North to the good outside, or continue south.',
+                'image': 'enviroment.png',
+                'directions': {
+                    'north': 'start',
+                    'south': 'bad_person'
+                }
+            },
+			'crappy_but_still_manmade': {
+                'title': 'The not so nice Outside',
+                'description': 'Oh thank heavens we\'re out of that hell! Even if it looks crappy it\'s still made by a real artist. Just head north again...',
+                'image': 'enviroment.png',
+                'directions': {
+                    'north': 'start',
+                    'south': 'notsobad_person'
+                }
+            },
+            'bad_person': {
+                'title': 'Mysterious man',
+                'description': 'Oh dear, it\'s a creepy looking person. They seem to be warning you on what\'s further south. "BEWARE THE AI GENERATED ART!" You should definetly head back north.',
+                'image': 'creeps.jpg',
+                'directions': {
+                    'north': 'crappy_start',
+                    'south': 'hell'
+                }
+            },
+			'notsobad_person': {
+                'title': 'Mysterious man',
+                'description': '"I TRIED TO WARN YOU, KID.", shouts the man. It would be best to heed their warning this time and to go back north.',
+                'image': 'creeps.jpg',
+                'directions': {
+                    'north': 'crappy_start',
+                    'south': 'hell'
+                }
+            },
+            'hell': {
+                'title': 'AI Art',
+                'description': 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+                'image': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png',
+                'directions': {
+                    'north': 'crappy_but_still_manmade',
+                    'south': 'crappy_but_still_manmade',
+					'east': 'crappy_but_still_manmade',
+                    'west': 'crappy_but_still_manmade'
+                }
+            },
+            'tree': {
+                'title': 'Gimkit Tree',
+                'description': 'It\'s a tree made out of gimkit. It points towards civilization east! Going back (south) just leads you back to the good old grass.',
+                'image': 'tree.png',
+                'directions': {
+                    'south': 'start',
+					'east': 'city'
+                }
+            },
+            'city': {
+                'title': 'Super Shape Bros City',
+                'description': 'A city for shapes. It appears a battle will be happening here soon, so it\'s best to leave by going south and back to the nature or going back to that tree west.',
+                'image': 'city.png',
+                'directions': {
+                    'south': 'start',
+					'west': 'tree',
+					'east': 'comput'
+                }
+            },
+            'comput': {
+                'title': 'The computer you\'re running this on.',
+                'description': 'Hey look, a computer! The title\'s a lie though, since this is a weird computer, it makes strange decisions... Wait, how did you get here? There was no sign markings. Might wanna leave by going north or south before you perish.',
+                'image': 'dunno.jpg',
+                'directions': {
+                    'north': 'start',
+					'south': 'crappy_start'
+                }
+            },
+            'person': {
+                'title': 'Animated person.',
+                'description': '"Hello, it is me, the main". Go east to get back to nature',
+                'image': 'animated.gif',
+                'directions': {
+                    'east': 'start'
+                }
+            }
+        };
+
+        var currentRoom = 'start'; // Starting room
+        updateRoom();
+
+        function processCommand() {
+            var command = document.getElementById('userInput').value.toLowerCase();
+            var directions = rooms[currentRoom].directions;
+
+            if (directions[command]) {
+                currentRoom = directions[command];
+                updateRoom();
+            } else {
+                if (currentRoom == 'hell')
+					{
+					currentRoom = 'crappy_but_still_manmade';
+					updateRoom();
+					}
+				else
+					alert('You cannot go that way.');
+            }
+
+            document.getElementById('userInput').value = ''; // Clear input field
+        }
+
+        function updateRoom() {
+            var room = rooms[currentRoom];
+            document.getElementById('roomTitle').innerText = room.title;
+            document.getElementById('roomDescription').innerText = room.description;
+            document.getElementById('gameImage').src = room.image;
+        }
+    </script>
+
+</body>
+</html>
